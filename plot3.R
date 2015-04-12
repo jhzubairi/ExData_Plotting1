@@ -1,0 +1,17 @@
+png(filename = "plot3.png",width = 480, height = 480, units = "px")
+
+ass4 <- read.table("household_power_consumption.txt",header=TRUE,sep=";")
+ass4$wkd <-strptime(paste(ass4$Date,ass4$Time),format="%d/%m/%Y %H:%M:%S")
+ass4$Date <- as.Date(strptime(ass4$Date,format="%d/%m/%Y"))
+ss <- subset(ass4,Date=="2007-02-01" | Date== "2007-02-02")
+ss$wkd <- as.POSIXct(ss$wkd)
+ss$Sub_metering_1 <- as.numeric(as.character(ss$Sub_metering_1))
+ss$Sub_metering_2 <- as.numeric(as.character(ss$Sub_metering_2))
+ss$Sub_metering_3 <- as.numeric(as.character(ss$Sub_metering_3))
+plot(ss$Sub_metering_1 ~ss$wkd,pch="|",type="n",lwd=1,xlab="",ylab="Energy sub metering")
+points(ss$wkd,ss$Sub_metering_1,col="dimgray",pch="|",type="l")
+points(ss$wkd,ss$Sub_metering_2,col="red",pch="|",type="l")
+points(ss$wkd,ss$Sub_metering_3,col="blue",pch="|",type="l")
+legend("topright",legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),pch="-",col=c("dimgray","red","blue"),lwd=3)
+
+dev.off()
